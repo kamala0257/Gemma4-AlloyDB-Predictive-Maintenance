@@ -2,6 +2,7 @@ import random
 import json
 import psycopg2
 from flask import Flask, render_template, jsonify, request
+import os
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ def get_db_connection():
         return psycopg2.connect(
             dbname="postgres",
             user="postgres",
-            password="omni", # The password you set in the docker run command
+            password=os.environ.get("DB_PASSWORD"), # The password you set in the docker run command
             host="127.0.0.1",
             port="5432"
         )
@@ -112,3 +113,4 @@ def stream():
 if __name__ == '__main__':
     print("🛡️ Starting Air-Gapped AI Dashboard on http://0.0.0.0:5000")
     app.run(host='0.0.0.0', port=5000, debug=True)
+
